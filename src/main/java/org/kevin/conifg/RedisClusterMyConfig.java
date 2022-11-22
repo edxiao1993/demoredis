@@ -27,9 +27,7 @@ public class RedisClusterMyConfig {
     public RedisClusterConfiguration clusterConfiguration() {
         Set<RedisNode> redisNodes = new HashSet<>();
         RedisNode n1 = new RedisNode("localhost", 6379);
-        RedisNode n2 = new RedisNode("47.119.128.80", 6379);
         redisNodes.add(n1);
-        redisNodes.add(n2);
 
         RedisClusterConfiguration redisClusterConfiguration = new RedisClusterConfiguration();
         redisClusterConfiguration.setClusterNodes(redisNodes);
