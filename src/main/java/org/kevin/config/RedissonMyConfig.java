@@ -1,4 +1,4 @@
-package org.kevin.conifg;
+package org.kevin.config;
 
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
