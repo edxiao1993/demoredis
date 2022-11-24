@@ -2,6 +2,7 @@ package org.kevin.config;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisClusterConfiguration;
 import org.springframework.data.redis.connection.RedisNode;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
@@ -19,7 +20,7 @@ import java.util.Set;
  */
 //@Configuration
 public class RedisClusterMyConfig {
-    @Bean
+
     public RedisClusterConfiguration clusterConfiguration() {
         Set<RedisNode> redisNodes = new HashSet<>();
         RedisNode n1 = new RedisNode("localhost", 6379);
@@ -40,24 +41,11 @@ public class RedisClusterMyConfig {
         return jedisPoolConfig;
     }
 
-    @Bean("jedisCluster")
-    public JedisConnectionFactory jedisConnectionFactory(RedisClusterConfiguration redisClusterConfiguration) {
-        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(redisClusterConfiguration, jedisPoolConfig());
+    @Bean("clusterJedis")
+    public JedisConnectionFactory jedisConnectionFactory() {
+        JedisConnectionFactory jedisConnectionFactory =
+                new JedisConnectionFactory(clusterConfiguration(), jedisPoolConfig());
         return jedisConnectionFactory;
     }
 
-    @Bean
-    @Qualifier("jedisCluster")
-    public RedisTemplate<String, String> redisTemplate(JedisConnectionFactory connectionFactory) {
-        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
-
-        StringRedisSerializer stringSerializer = new StringRedisSerializer();
-        GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializer();
-        redisTemplate.setKeySerializer(stringSerializer);
-        redisTemplate.setHashKeySerializer(stringSerializer);
-        redisTemplate.setValueSerializer(genericJackson2JsonRedisSerializer);
-        redisTemplate.setConnectionFactory(connectionFactory);
-
-        return redisTemplate;
-    }
 }

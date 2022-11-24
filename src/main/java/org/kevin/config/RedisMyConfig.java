@@ -2,6 +2,7 @@ package org.kevin.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
@@ -17,7 +18,8 @@ import redis.clients.jedis.JedisPoolConfig;
 @Configuration
 public class RedisMyConfig {
 
-    @Bean
+    @Bean(name = "standaloneJedis")
+    @Primary
     public JedisConnectionFactory standalone() {
         RedisStandaloneConfiguration aloneConfiguration =
                 new RedisStandaloneConfiguration("localhost", 6379);
